@@ -93,6 +93,7 @@ jobs:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: package-java-application
+    if: github.ref == 'refs/heads/main'    # <--- only run on main branch
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
