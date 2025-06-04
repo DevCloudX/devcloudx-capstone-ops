@@ -1,2 +1,1 @@
-# devcloudx-capstone-ops
-devcloudx-capstone-ops
+# Capstone mega DevSecOps Project 🚀 
