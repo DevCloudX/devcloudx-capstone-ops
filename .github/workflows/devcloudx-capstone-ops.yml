@@ -108,6 +108,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          provenance: false
           tags: |
             abhishekrana0317/devcloudx-capstone-ops:V001
             abhishekrana0317/devcloudx-capstone-ops:build-${{ github.run_number }}
