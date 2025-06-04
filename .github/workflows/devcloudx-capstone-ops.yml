@@ -93,7 +93,8 @@ jobs:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: package-java-application
-    if: github.ref == 'refs/heads/main'    # only run on main branch
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -124,7 +125,7 @@ jobs:
             abhishekrana0317/devcloudx-capstone-ops:build-${{ github.run_number }}
 
   auto-merge-development-to-main:
-    name: Auto-merge Development into Main
+    name: Auto-merge
     runs-on: ubuntu-latest
     needs: build-and-push-docker-image
     steps:
