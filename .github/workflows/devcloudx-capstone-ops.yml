@@ -93,7 +93,7 @@ jobs:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: package-java-application
-    if: github.ref == 'refs/heads/main'    # <--- only run on main branch
+    if: github.ref == 'refs/heads/main'    # only run on main branch
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -122,3 +122,40 @@ jobs:
           provenance: false
           tags: |
             abhishekrana0317/devcloudx-capstone-ops:build-${{ github.run_number }}
+
+  auto-merge-development-to-main:
+    name: Auto-merge Development into Main
+    runs-on: ubuntu-latest
+    needs: build-and-push-docker-image
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Pull Request from Development to Main
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-merge development branch into main"
+          branch: auto-merge/development-to-main
+          base: main
+          head: development
+          title: "Auto-merge development branch into main"
+          body: "This PR is automatically created to merge the development branch into main after successful docker build."
+          draft: false
+          labels: auto-merge
+
+      - name: Auto Merge the Pull Request
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: actions-ecosystem/action-auto-merge@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pull_request_number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge_method: squash
