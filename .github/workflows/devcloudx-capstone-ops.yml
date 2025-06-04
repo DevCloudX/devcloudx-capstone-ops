@@ -4,6 +4,11 @@ on:
   push:
     branches: "*"
 
+    
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   compile-java-source:
     name: Compile Java Source
