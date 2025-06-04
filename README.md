@@ -1,1 +1,0 @@
-# Capstone mega DevSecOps Project 🚀 
